@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "913084705365",
+    "project_id": "dawdle-db806",
+    "storage_bucket": "dawdle-db806.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913084705365:android:069e59edd6e360607782dc",
+        "android_client_info": {
+          "package_name": "com.dawdle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913084705365-kn4pdcu42fjr97etbv2a0v443o9qg4rb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWwFhAD6npGk_SDIBqZhYiI3yyBk8F8ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913084705365-kn4pdcu42fjr97etbv2a0v443o9qg4rb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "913084705365-9kqb9va2986jna8u8fk7tg9lkbng74k8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Dawdle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

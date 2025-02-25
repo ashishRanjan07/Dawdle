@@ -1,0 +1,227 @@
+import {
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import AppColor from "../../utils/AppColor";
+import { ImagePath } from "../../utils/ImagePath";
+import {
+  moderateScale,
+  moderateScaleVertical,
+  scale,
+  textScale,
+} from "../../utils/ResponsiveSize";
+import FontFamily from "../../utils/FontFamily";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import CustomButton from "../../components/CustomButton";
+import { useNavigation } from "@react-navigation/native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { showMessage } from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ADD_FEEDBACK } from "../../api/API_SERVICES";
+
+const Feedback = () => {
+  const [feedback, setFeedback] = useState("");
+  const [checked, setChecked] = useState(false);
+  const navigation = useNavigation();
+  const handleSubmitFeedback = async () => {
+    // navigation.navigate("End");
+    if (feedback.trim() === "") {
+      showMessage({
+        type: "danger",
+        icon: "danger",
+        message: "Please enter the feedback",
+      });
+      return null;
+    }
+    const userData = await AsyncStorage.getItem("userData");
+    const res = JSON.parse(userData);
+    console.log(res?.data?._id, "line 52");
+    const data = {
+      userId: res?.data?._id,
+      feedback: feedback,
+      provideFeedback:checked
+    };
+    try {
+      const response = await ADD_FEEDBACK(data);
+      console.log(response, "Line 59");
+      if (response?.status === true) {
+        navigation.navigate("End");
+      }
+    } catch (error) {
+      showMessage({
+        message: error,
+        type: "danger",
+        icon: "danger",
+      });
+    }
+  };
+  return (
+    <View style={styles.main}>
+      <StatusBar
+        barStyle={"dark-content"}
+        backgroundColor={"transparent"}
+        translucent={true}
+      />
+      <View style={{ height: "30%" }}>
+        <Image
+          source={ImagePath.bg1}
+          resizeMode="stretch"
+          style={{ width: "100%", height: "95%" }}
+        />
+      </View>
+      <View style={styles.logoImageHolder}>
+        <Image
+          source={ImagePath.dawadle}
+          style={{ width: moderateScale(173), height: moderateScale(80) }}
+        />
+      </View>
+      <ScrollView>
+
+    
+      <View style={styles.contentHolder}>
+        <Text style={styles.textStyle}>Thank you for using my</Text>
+        <Text style={[styles.textStyle, { color: AppColor.primary }]}>
+          first prototype!
+        </Text>
+        <Text style={styles.textStyle}>
+          It means a lot. I’d love to get your feedback on what you liked,
+          disliked, and wish to see from future versions of the app
+        </Text>
+      </View>
+
+      <TextInput
+        placeholder="Text entry"
+        placeholderTextColor={AppColor.textGray}
+        value={feedback}
+        onChangeText={(text) => setFeedback(text)}
+        style={styles.textInputBox}
+      />
+      <TouchableOpacity
+        style={{
+          marginVertical: moderateScaleVertical(10),
+          width: "90%",
+          alignSelf: "center",
+          flexDirection: "row",
+          gap: moderateScale(10),
+        }}
+        onPress={() => setChecked(!checked)}
+      >
+        {checked ? (
+          <FontAwesome
+            name="check-square"
+            size={textScale(25)}
+            color={AppColor.primary}
+          />
+        ) : (
+          <MaterialCommunityIcons
+            name={"checkbox-blank-outline"}
+            size={textScale(25)}
+            color={AppColor.textGray}
+          />
+        )}
+        <Text
+          style={{
+            width: "90%",
+            fontFamily: FontFamily.Inter_Light,
+            color: AppColor.textGray,
+            fontSize: textScale(13),
+            fontWeight: "300",
+          }}
+        >
+          Are you open to being contacted to provide feedback on your
+          experiences with the app?
+        </Text>
+      </TouchableOpacity>
+      <View
+        style={{
+          marginVertical: moderateScaleVertical(10),
+          width: "85%",
+          alignSelf: "center",
+          alignItems: "center",
+        }}
+      >
+        <CustomButton
+          title={"Submit"}
+          // handleAction={() => navigation.navigate("End")}
+          handleAction={handleSubmitFeedback}
+        />
+      </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+export default Feedback;
+
+const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    backgroundColor: AppColor.white,
+  },
+  text: {
+    fontFamily: FontFamily.Inter_Medium,
+    fontSize: textScale(24),
+    color: AppColor.black,
+    textAlign: "center",
+    lineHeight: scale(40),
+  },
+  logoImage: {
+    width: moderateScale(172),
+    height: moderateScale(79),
+  },
+  lineImageHolder: {
+    width: "100%",
+    marginTop: "-15%",
+  },
+  textStyle: {
+    // fontFamily: FontFamily.Inter_Medium,
+    color: AppColor.buttonBack1,
+    fontSize: textScale(13),
+    textAlign: "center",
+    letterSpacing: scale(0.5),
+    lineHeight: scale(26),
+    fontWeight: "400",
+  },
+  contentHolder: {
+    marginTop: "5%",
+    width: "90%",
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  logoImageHolder: {
+    position: "absolute",
+    marginTop: "25%",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  textInputBox: {
+    borderWidth: 2,
+    marginTop: '25%',
+    width: '90%',
+    height: moderateScale(120),
+    alignSelf: "center",
+    borderRadius: moderateScale(10),
+    backgroundColor: AppColor.borderColor,
+    borderColor: AppColor.borderColor,
+    fontFamily: FontFamily.Inter_Regular,
+    fontSize: textScale(13),
+    fontWeight: "400",
+    color: AppColor.black,
+    paddingHorizontal: moderateScale(15),
+  },
+  logoHolder: {
+    flexDirection: "row",
+    marginTop:
+      Platform.OS === "android" ? moderateScaleVertical(50) : moderateScale(15),
+    height: moderateScale(40),
+    alignItems: "center",
+    paddingHorizontal: moderateScale(10),
+  },
+});
