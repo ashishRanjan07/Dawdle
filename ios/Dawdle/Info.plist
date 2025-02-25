@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.913084705365-rkd3a13n55nppacvdh62u2ak8o5d7k4q</string>
+				<string>""</string>
 				<string>io.assertit.DawdleTests</string>
 			</array>
 		</dict>
